@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><title>Timetable Generator</title></head>
-<body><h1>It works!</h1></body>
+<head>
+    <title>Timetable Generator</title>
+</head>
+<body>
+    <h1>Timetable Generator</h1>
+    <form action="/generate" method="POST">
+        <h3>Basic Setup</h3>
+        <label>Number of working days per week:</label>
+        <input type="number" name="num_days" min="1" max="7" value="5" required><br><br>
+
+        <label>Number of periods per day:</label>
+        <input type="number" name="periods_per_day" min="1" max="12" value="6" required><br><br>
+
+        <label>Number of class divisions (e.g. "Grade 8 - A"):</label>
+        <input type="number" name="num_classes" min="1" value="1" required><br><br>
+
+        <h3>Teachers</h3>
+        <p>Enter one teacher per line, in this format:<br>
+        <code>Name - Subject:PeriodsPerWeek, Subject:PeriodsPerWeek</code><br>
+        Example: <code>Priya - Math:5, Science:3</code></p>
+        <textarea name="teacher_data" rows="6" cols="60" required></textarea><br><br>
+
+        <button type="submit">Generate Timetable</button>
+    </form>
+</body>
 </html>
