@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Timetable Generator</title>
+    <title>Tablex</title>
 </head>
 <body>
-    <h1>Timetable Generator</h1>
+    <h1>Tablex</h1>
     <form action="/generate" method="POST">
         <h3>Basic Setup</h3>
         <label>Number of working days per week:</label>
@@ -16,10 +16,16 @@
         <label>Number of class divisions (e.g. "Grade 8 - A"):</label>
         <input type="number" name="num_classes" min="1" value="1" required><br><br>
 
+        <h3>Subjects</h3>
+        <p>Enter one subject per line, in this format:<br>
+        <code>SubjectName:PeriodsPerWeek</code><br>
+        Example: <code>Math:5</code></p>
+        <textarea name="subject_data" rows="5" cols="60" required></textarea><br><br>
+
         <h3>Teachers</h3>
         <p>Enter one teacher per line, in this format:<br>
-        <code>Name - Subject:PeriodsPerWeek, Subject:PeriodsPerWeek</code><br>
-        Example: <code>Priya - Math:5, Science:3</code></p>
+        <code>Name - Subject, Subject</code><br>
+        Example: <code>Priya - Math, Science</code></p>
         <textarea name="teacher_data" rows="6" cols="60" required></textarea><br><br>
 
         <button type="submit">Generate Timetable</button>

@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+from scheduler import generate_timetable, build_teacher_timetables
+from check_timetable import check_timetable
 
 app = Flask(__name__)
 
@@ -8,39 +10,54 @@ def home():
 
 @app.route("/generate", methods=["POST"])
 def generate():
-    # Step A: get the simple number fields from the form
     num_days = int(request.form["num_days"])
     periods_per_day = int(request.form["periods_per_day"])
     num_classes = int(request.form["num_classes"])
 
-    # Step B: get the raw teacher text and break it into structured data
-    raw_teacher_text = request.form["teacher_data"]
-    teachers = parse_teacher_data(raw_teacher_text)
+    subjects = parse_subject_data(request.form["subject_data"])
+    teachers = parse_teacher_data(request.form["teacher_data"])
 
-    # Step C: for now, just show what we received (to confirm it's working)
-    return f"""
-    <h2>Received your inputs:</h2>
-    <p>Days per week: {num_days}</p>
-    <p>Periods per day: {periods_per_day}</p>
-    <p>Number of classes: {num_classes}</p>
-    <p>Parsed teachers: {teachers}</p>
-    """
+    day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][:num_days]
 
-def parse_teacher_data(raw_text):
-    """Turn the textarea's raw text into a list of teacher dictionaries."""
-    teachers = []
-    lines = raw_text.strip().split("\n")   # split into one line per teacher
+    timetable = generate_timetable(num_days, periods_per_day, num_classes, subjects, teachers)
+    teacher_timetables = build_teacher_timetables(timetable, teachers, day_names, periods_per_day)
+
+    errors = check_timetable(timetable, subjects, teachers, day_names, periods_per_day)
+    if errors:
+        print("⚠️ TIMETABLE ERRORS FOUND:")
+        for e in errors:
+            print(" -", e)
+    else:
+        print("✅ Timetable passed all checks!")
+
+    return render_template(
+        "result.html",
+        timetable=timetable,
+        teacher_timetables=teacher_timetables,
+        periods_per_day=periods_per_day
+    )
+
+def parse_subject_data(raw_text):
+    """Turn 'Math:5' lines into a list like [{'name': 'Math', 'periods_per_week': 5}]"""
+    subjects = []
+    lines = raw_text.strip().split("\n")
 
     for line in lines:
-        name_part, subjects_part = line.split("-", 1)   # split "Priya - Math:5, Science:3"
+        name, periods = line.split(":")
+        subjects.append({"name": name.strip(), "periods_per_week": int(periods.strip())})
+
+    return subjects
+
+def parse_teacher_data(raw_text):
+    """Turn 'Priya - Math, Science' lines into [{'name': 'Priya', 'subjects': ['Math', 'Science']}]"""
+    teachers = []
+    lines = raw_text.strip().split("\n")
+
+    for line in lines:
+        name_part, subjects_part = line.split("-", 1)
         name = name_part.strip()
-
-        subjects = {}
-        for subject_entry in subjects_part.split(","):      # split "Math:5, Science:3" by comma
-            subject_name, periods = subject_entry.split(":")  # split "Math:5" by colon
-            subjects[subject_name.strip()] = int(periods.strip())
-
-        teachers.append({"name": name, "subjects": subjects})
+        subject_list = [s.strip() for s in subjects_part.split(",")]
+        teachers.append({"name": name, "subjects": subject_list})
 
     return teachers
 
