@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from scheduler import generate_timetable, build_teacher_timetables, check_feasibility
+from scheduler import generate_timetable_cp, build_teacher_timetables, check_feasibility
 from check_timetable import check_timetable
 
 app = Flask(__name__)
@@ -25,7 +25,15 @@ def generate():
     if feasibility_warnings:
         return render_template("infeasible.html", warnings=feasibility_warnings)
 
-    timetable = generate_timetable(num_days, periods_per_day, class_names, subjects, teachers, min_free_periods)
+    timetable = generate_timetable_cp(num_days, periods_per_day, class_names, subjects, teachers, min_free_periods)
+
+    if timetable is None:
+        return render_template(
+            "infeasible.html",
+            warnings=["The solver could not find any valid timetable satisfying all constraints. "
+                      "Try adding more teachers, reducing classes, or relaxing the free-period requirement."]
+        )
+
     teacher_timetables = build_teacher_timetables(timetable, teachers, day_names, periods_per_day)
 
     errors = check_timetable(timetable, subjects, teachers, day_names, periods_per_day, min_free_periods)
