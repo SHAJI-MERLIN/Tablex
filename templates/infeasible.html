@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>Cannot Generate Timetable</title></head>
+<body>
+    <h1>⚠️ Not enough teachers to generate this timetable</h1>
+    <ul>
+        {% for warning in warnings %}
+            <li>{{ warning }}</li>
+        {% endfor %}
+    </ul>
+    <p>Please add more qualified teachers for the subjects listed above, or reduce the number of classes/periods needed, then try again.</p>
+    <a href="/">Back to form</a>
+</body>
+</html>

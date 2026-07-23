@@ -1,6 +1,6 @@
 import random
 
-def generate_timetable(num_days, periods_per_day, num_classes, subjects, teachers, min_free_periods=1):
+def generate_timetable(num_days, periods_per_day, class_names, subjects, teachers, min_free_periods=1):
     """
     Builds a clash-free timetable for every class.
     Returns a dictionary like:
@@ -14,8 +14,7 @@ def generate_timetable(num_days, periods_per_day, num_classes, subjects, teacher
     }
     """
     day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][:num_days]
-    class_names = [f"Class {i+1}" for i in range(num_classes)]
-
+   
     # Track how many periods still needed per subject, PER CLASS
     remaining_periods = {
         class_name: {subj["name"]: subj["periods_per_week"] for subj in subjects}
@@ -99,3 +98,36 @@ def build_teacher_timetables(timetable, teachers, day_names, periods_per_day):
                 teacher_timetables[teacher_name][day][period] = f"{entry.split(' (')[0]} - {class_name}"
 
     return teacher_timetables
+def check_feasibility(class_names, subjects, teachers, num_days, periods_per_day, min_free_periods=1):
+    """
+    Checks whether there are enough teachers to realistically cover demand,
+    BEFORE attempting to generate a timetable. Returns a list of warning messages.
+    """
+    warnings = []
+    max_periods_per_teacher = num_days * (periods_per_day - min_free_periods)
+
+    for subject in subjects:
+        subject_name = subject["name"]
+        periods_needed_per_class = subject["periods_per_week"]
+        total_demand = periods_needed_per_class * len(class_names)
+
+        qualified_teachers = [
+            t for t in teachers
+            if subject_name.lower() in [s.lower() for s in t["subjects"]]
+        ]
+
+        if not qualified_teachers:
+            warnings.append(f"No teacher at all can teach '{subject_name}' — every class needs it but nobody is qualified.")
+            continue
+
+        total_supply = len(qualified_teachers) * max_periods_per_teacher
+
+        if total_demand > total_supply:
+            warnings.append(
+                f"NOT ENOUGH TEACHERS for '{subject_name}': needs {total_demand} periods/week "
+                f"across {len(class_names)} classes, but {len(qualified_teachers)} teacher(s) "
+                f"({', '.join(t['name'] for t in qualified_teachers)}) can supply at most {total_supply}. "
+                f"Consider adding more teachers for '{subject_name}'."
+            )
+
+    return warnings

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from scheduler import generate_timetable, build_teacher_timetables
+from scheduler import generate_timetable, build_teacher_timetables, check_feasibility
 from check_timetable import check_timetable
 
 app = Flask(__name__)
@@ -12,15 +12,20 @@ def home():
 def generate():
     num_days = int(request.form["num_days"])
     periods_per_day = int(request.form["periods_per_day"])
-    num_classes = int(request.form["num_classes"])
     min_free_periods = int(request.form["min_free_periods"])
 
+    class_names = [line.strip() for line in request.form["class_data"].strip().split("\n")]
     subjects = parse_subject_data(request.form["subject_data"])
     teachers = parse_teacher_data(request.form["teacher_data"])
 
     day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][:num_days]
 
-    timetable = generate_timetable(num_days, periods_per_day, num_classes, subjects, teachers, min_free_periods)
+    # Check feasibility BEFORE generating - stop early if it's impossible
+    feasibility_warnings = check_feasibility(class_names, subjects, teachers, num_days, periods_per_day, min_free_periods)
+    if feasibility_warnings:
+        return render_template("infeasible.html", warnings=feasibility_warnings)
+
+    timetable = generate_timetable(num_days, periods_per_day, class_names, subjects, teachers, min_free_periods)
     teacher_timetables = build_teacher_timetables(timetable, teachers, day_names, periods_per_day)
 
     errors = check_timetable(timetable, subjects, teachers, day_names, periods_per_day, min_free_periods)

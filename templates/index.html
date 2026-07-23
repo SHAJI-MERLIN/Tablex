@@ -13,11 +13,13 @@
         <label>Number of periods per day:</label>
         <input type="number" name="periods_per_day" min="1" max="12" value="6" required><br><br>
 
-        <label>Number of class divisions (e.g. "Grade 8 - A"):</label>
-        <input type="number" name="num_classes" min="1" value="1" required><br><br>
-
         <label>Minimum free periods per teacher, per day:</label>
         <input type="number" name="min_free_periods" min="0" value="1" required><br><br>
+
+        <h3>Classes</h3>
+        <p>Enter one class name per line, e.g.:<br>
+        <code>1-A</code></p>
+        <textarea name="class_data" rows="5" cols="60" required></textarea><br><br>
 
         <h3>Subjects</h3>
         <p>Enter one subject per line, in this format:<br>
