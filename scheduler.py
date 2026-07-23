@@ -1,6 +1,6 @@
 import random
 
-def generate_timetable(num_days, periods_per_day, num_classes, subjects, teachers):
+def generate_timetable(num_days, periods_per_day, num_classes, subjects, teachers, min_free_periods=1):
     """
     Builds a clash-free timetable for every class.
     Returns a dictionary like:
@@ -61,8 +61,8 @@ def generate_timetable(num_days, periods_per_day, num_classes, subjects, teacher
                             continue
 
                         periods_left_today = periods_per_day - period + 1
-                        if (teacher_free_count[teacher["name"]][day] == 0
-                                and periods_left_today <= 1):
+                        free_periods_still_needed = min_free_periods - teacher_free_count[teacher["name"]][day]
+                        if free_periods_still_needed >= periods_left_today:
                             continue
 
                         timetable[class_name][day][period] = f"{subject['name']} ({teacher['name']})"

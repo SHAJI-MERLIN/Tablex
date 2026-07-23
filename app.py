@@ -13,16 +13,17 @@ def generate():
     num_days = int(request.form["num_days"])
     periods_per_day = int(request.form["periods_per_day"])
     num_classes = int(request.form["num_classes"])
+    min_free_periods = int(request.form["min_free_periods"])
 
     subjects = parse_subject_data(request.form["subject_data"])
     teachers = parse_teacher_data(request.form["teacher_data"])
 
     day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][:num_days]
 
-    timetable = generate_timetable(num_days, periods_per_day, num_classes, subjects, teachers)
+    timetable = generate_timetable(num_days, periods_per_day, num_classes, subjects, teachers, min_free_periods)
     teacher_timetables = build_teacher_timetables(timetable, teachers, day_names, periods_per_day)
 
-    errors = check_timetable(timetable, subjects, teachers, day_names, periods_per_day)
+    errors = check_timetable(timetable, subjects, teachers, day_names, periods_per_day, min_free_periods)
     if errors:
         print("⚠️ TIMETABLE ERRORS FOUND:")
         for e in errors:
