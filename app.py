@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from scheduler import generate_timetable_cp, build_teacher_timetables, check_feasibility
 from check_timetable import check_timetable
+import openpyxl
+import io
 
 app = Flask(__name__)
 
@@ -20,7 +22,6 @@ def generate():
 
     day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][:num_days]
 
-    # Check feasibility BEFORE generating - stop early if it's impossible
     feasibility_warnings = check_feasibility(class_names, subjects, teachers, num_days, periods_per_day, min_free_periods)
     if feasibility_warnings:
         return render_template("infeasible.html", warnings=feasibility_warnings)
@@ -48,7 +49,48 @@ def generate():
         "result.html",
         timetable=timetable,
         teacher_timetables=teacher_timetables,
-        periods_per_day=periods_per_day
+        periods_per_day=periods_per_day,
+        num_days=num_days,
+        min_free_periods=min_free_periods,
+        class_data=request.form["class_data"],
+        subject_data=request.form["subject_data"],
+        teacher_data=request.form["teacher_data"]
+    )
+
+@app.route("/download/excel", methods=["POST"])
+def download_excel():
+    num_days = int(request.form["num_days"])
+    periods_per_day = int(request.form["periods_per_day"])
+    min_free_periods = int(request.form["min_free_periods"])
+    class_names = [line.strip() for line in request.form["class_data"].strip().split("\n")]
+    subjects = parse_subject_data(request.form["subject_data"])
+    teachers = parse_teacher_data(request.form["teacher_data"])
+    day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][:num_days]
+
+    timetable = generate_timetable_cp(num_days, periods_per_day, class_names, subjects, teachers, min_free_periods)
+
+    workbook = openpyxl.Workbook()
+    workbook.remove(workbook.active)
+
+    for class_name, schedule in timetable.items():
+        sheet = workbook.create_sheet(title=class_name[:31])
+        sheet.append(["Day"] + [f"Period {p}" for p in range(1, periods_per_day + 1)])
+
+        for day in day_names:
+            row = [day]
+            for period in range(1, periods_per_day + 1):
+                row.append(schedule[day][period])
+            sheet.append(row)
+
+    output = io.BytesIO()
+    workbook.save(output)
+    output.seek(0)
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name="tablex_timetable.xlsx",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
 def parse_subject_data(raw_text):
