@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000" viewBox="0 0 1500 1000">
+  <defs>
+    <linearGradient id="skyGrad2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f5c7"/>
+      <stop offset="100%" stop-color="#bfe3b3"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1500" height="1000" fill="url(#skyGrad2)"/>
+
+  <path d="M0,650 C300,560 550,780 850,700 C1100,635 1300,820 1500,720 L1500,1000 L0,1000 Z" fill="#a3c58550"/>
+  <path d="M0,760 C280,720 560,880 820,830 C1080,780 1300,930 1500,880 L1500,1000 L0,1000 Z" fill="#84b17940"/>
+
+  <g opacity="0.5" fill="none" stroke="#ffffff" stroke-width="2">
+    <circle cx="70" cy="60" r="3"/><circle cx="95" cy="60" r="3"/><circle cx="120" cy="60" r="3"/>
+    <circle cx="70" cy="85" r="3"/><circle cx="95" cy="85" r="3"/><circle cx="120" cy="85" r="3"/>
+    <circle cx="70" cy="110" r="3"/><circle cx="95" cy="110" r="3"/><circle cx="120" cy="110" r="3"/>
+  </g>
+
+  <circle cx="140" cy="700" r="60" fill="#e8f0c7" opacity="0.6"/>
+
+  <g fill="#6d9863" opacity="0.55">
+    <ellipse cx="70" cy="870" rx="50" ry="55"/>
+    <ellipse cx="130" cy="890" rx="65" ry="65"/>
+    <ellipse cx="205" cy="875" rx="45" ry="50"/>
+  </g>
+  <g stroke="#4d7442" stroke-width="6" opacity="0.55">
+    <line x1="70" y1="905" x2="70" y2="940"/>
+    <line x1="130" y1="930" x2="130" y2="955"/>
+    <line x1="205" y1="905" x2="205" y2="935"/>
+  </g>
+
+  <g transform="translate(300,620)" opacity="0.6">
+    <rect x="0" y="70" width="380" height="150" fill="#84b179"/>
+    <rect x="150" y="0" width="90" height="220" fill="#6d9863"/>
+    <polygon points="150,0 195,-45 240,0" fill="#4d7442"/>
+    <rect x="193" y="-43" width="4" height="22" fill="#4d7442"/>
+    <rect x="197" y="-45" width="18" height="11" fill="#e8f0c7"/>
+    <circle cx="195" cy="35" r="12" fill="#f0f5c7"/>
+    <line x1="195" y1="35" x2="195" y2="27" stroke="#4d7442" stroke-width="2"/>
+    <line x1="195" y1="35" x2="202" y2="35" stroke="#4d7442" stroke-width="2"/>
+    <rect x="180" y="120" width="30" height="100" fill="#4d7442"/>
+    <g fill="#f0f5c7">
+      <rect x="20" y="100" width="32" height="42"/>
+      <rect x="68" y="100" width="32" height="42"/>
+      <rect x="280" y="100" width="32" height="42"/>
+      <rect x="328" y="100" width="32" height="42"/>
+      <rect x="20" y="160" width="32" height="42"/>
+      <rect x="328" y="160" width="32" height="42"/>
+    </g>
+    <path d="M-20 70 C 60 30, 320 30, 400 70 L 400 90 L -20 90 Z" fill="#4d7442" opacity="0.5"/>
+  </g>
+
+  <g transform="translate(950,270)" opacity="0.95">
+    <rect x="0" y="0" width="340" height="410" rx="24" fill="#3f6b3a"/>
+    <rect x="16" y="16" width="308" height="378" rx="14" fill="#f5f9ec"/>
+    <rect x="140" y="-14" width="60" height="30" rx="8" fill="#3f6b3a"/>
+    <text x="170" y="66" text-anchor="middle" font-family="Arial" font-size="24" font-weight="bold" fill="#4d7442">TIMETABLE</text>
+    <g stroke="#c7e8bd" stroke-width="2">
+      <line x1="16" y1="90" x2="324" y2="90"/>
+      <line x1="16" y1="150" x2="324" y2="150"/>
+      <line x1="16" y1="210" x2="324" y2="210"/>
+      <line x1="16" y1="270" x2="324" y2="270"/>
+      <line x1="16" y1="330" x2="324" y2="330"/>
+      <line x1="68" y1="90" x2="68" y2="394"/>
+      <line x1="140" y1="90" x2="140" y2="394"/>
+      <line x1="212" y1="90" x2="212" y2="394"/>
+      <line x1="284" y1="90" x2="284" y2="394"/>
+    </g>
+    <g fill="#84b179">
+      <rect x="74" y="96" width="60" height="48" opacity="0.6"/>
+      <rect x="218" y="96" width="60" height="48" opacity="0.4"/>
+      <rect x="146" y="156" width="60" height="48" opacity="0.5"/>
+      <rect x="290" y="156" width="28" height="48" opacity="0.6"/>
+      <rect x="74" y="216" width="60" height="48" opacity="0.4"/>
+      <rect x="218" y="216" width="60" height="48" opacity="0.6"/>
+    </g>
+  </g>
+
+  <g transform="translate(1000,560) rotate(-6)" opacity="0.95">
+    <rect x="0" y="0" width="220" height="290" rx="14" fill="#6d9863"/>
+    <rect x="0" y="0" width="18" height="290" rx="8" fill="#4d7442"/>
+    <rect x="85" y="55" width="50" height="50" fill="none" stroke="#f0f5c7" stroke-width="3"/>
+    <polygon points="100,55 130,55 115,90" fill="none" stroke="#f0f5c7" stroke-width="3"/>
+    <rect x="55" y="270" width="20" height="55" fill="#e8f0c7"/>
+  </g>
+
+  <g transform="translate(1330,340) rotate(20)" opacity="0.85">
+    <rect x="0" y="0" width="16" height="150" rx="8" fill="#4d7442"/>
+    <polygon points="0,150 16,150 8,175" fill="#3f6b3a"/>
+    <rect x="0" y="20" width="16" height="10" fill="#f0f5c7"/>
+  </g>
+
+  <g transform="translate(1260,40)" stroke="#4d7442" stroke-width="3" fill="#84b17966" opacity="0.75">
+    <line x1="0" y1="0" x2="110" y2="100"/>
+    <ellipse cx="10" cy="8" rx="17" ry="9" transform="rotate(20 10 8)"/>
+    <ellipse cx="40" cy="30" rx="17" ry="9" transform="rotate(30 40 30)"/>
+    <ellipse cx="70" cy="55" rx="17" ry="9" transform="rotate(35 70 55)"/>
+    <ellipse cx="100" cy="80" rx="17" ry="9" transform="rotate(40 100 80)"/>
+  </g>
+
+  <g transform="translate(1380,780)" opacity="0.85">
+    <path d="M10 60 L50 60 L45 20 C 45 5, 15 5, 15 20 Z" fill="#84b179"/>
+    <rect x="0" y="60" width="60" height="14" rx="4" fill="#4d7442"/>
+    <path d="M30 20 C 20 5, 5 10, 8 25" fill="none" stroke="#4d7442" stroke-width="3"/>
+    <path d="M30 20 C 40 0, 55 8, 50 22" fill="none" stroke="#4d7442" stroke-width="3"/>
+  </g>
+
+</svg>

@@ -2,112 +2,120 @@
 <html>
 <head>
     <title>Tablex — Generated Timetable</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f6f8;
-            color: #222;
+            color: #2f4a28;
             margin: 0;
             padding: 20px 40px;
+            background-image: url("/static/bg_hero2.svg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .card {
+            background: #ffffffee;
+            border-radius: 14px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(60,90,50,0.15);
         }
         h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
+            font-family: 'Poppins', sans-serif;
+            color: #4d7442;
+            border-bottom: 3px solid #84b179;
             padding-bottom: 8px;
-            margin-top: 40px;
+            margin-top: 0;
         }
-        h2 {
-            color: #34495e;
-            margin-top: 25px;
-        }
+        h2 { font-family: 'Poppins', sans-serif; color: #5c8a4f; margin-top: 0; }
         table {
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             background: white;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #c7e8bd;
             padding: 10px 14px;
             text-align: center;
         }
-        th {
-            background-color: #3498db;
-            color: white;
-        }
-        td:first-child {
-            background-color: #ecf0f1;
-            font-weight: bold;
-        }
-        tr:hover td {
-            background-color: #f1f9ff;
-        }
-        a.back-link {
+        th { background-color: #84b179; color: white; }
+        td:first-child { background-color: #e4f2d9; font-weight: bold; }
+        tr:hover td { background-color: #eef8e6; }
+        a.back-link, button {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 10px;
             padding: 10px 18px;
-            background-color: #2c3e50;
+            background-color: #84b179;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
         }
-        a.back-link:hover {
-            background-color: #34495e;
-        }
+        a.back-link:hover, button:hover { background-color: #6d9863; }
     </style>
 </head>
 <body>
-    <h1>Class Timetables</h1>
-    <form action="/download/excel" method="POST" style="margin-bottom: 20px;">
-        <input type="hidden" name="num_days" value="{{ num_days }}">
-        <input type="hidden" name="periods_per_day" value="{{ periods_per_day }}">
-        <input type="hidden" name="min_free_periods" value="{{ min_free_periods }}">
-        <input type="hidden" name="class_data" value="{{ class_data }}">
-        <input type="hidden" name="subject_data" value="{{ subject_data }}">
-        <input type="hidden" name="teacher_data" value="{{ teacher_data }}">
-        <button type="submit">📥 Download as Excel</button>
-    </form>
+    <div class="card">
+        <form action="/download/excel" method="POST" style="margin: 0;">
+            <input type="hidden" name="num_days" value="{{ num_days }}">
+            <input type="hidden" name="periods_per_day" value="{{ periods_per_day }}">
+            <input type="hidden" name="min_free_periods" value="{{ min_free_periods }}">
+            <input type="hidden" name="class_data" value="{{ class_data }}">
+            <input type="hidden" name="subject_data" value="{{ subject_data }}">
+            <input type="hidden" name="teacher_data" value="{{ teacher_data }}">
+            <button type="submit">📥 Download as Excel</button>
+        </form>
+    </div>
 
-    {% for class_name, schedule in timetable.items() %}
-        <h2>{{ class_name }}</h2>
-        <table>
-            <tr>
-                <th>Day \ Period</th>
-                {% for period in range(1, periods_per_day + 1) %}
-                    <th>{{ period }}</th>
-                {% endfor %}
-            </tr>
-            {% for day, periods in schedule.items() %}
+    <div class="card">
+        <h1>Class Timetables</h1>
+        {% for class_name, schedule in timetable.items() %}
+            <h2>{{ class_name }}</h2>
+            <table>
                 <tr>
-                    <td>{{ day }}</td>
+                    <th>Day \ Period</th>
                     {% for period in range(1, periods_per_day + 1) %}
-                        <td>{{ periods[period] }}</td>
+                        <th>{{ period }}</th>
                     {% endfor %}
                 </tr>
-            {% endfor %}
-        </table>
-    {% endfor %}
-
-    <h1>Teacher Timetables</h1>
-    {% for teacher_name, schedule in teacher_timetables.items() %}
-        <h2>{{ teacher_name }}</h2>
-        <table>
-            <tr>
-                <th>Day \ Period</th>
-                {% for period in range(1, periods_per_day + 1) %}
-                    <th>{{ period }}</th>
+                {% for day, periods in schedule.items() %}
+                    <tr>
+                        <td>{{ day }}</td>
+                        {% for period in range(1, periods_per_day + 1) %}
+                            <td>{{ periods[period] }}</td>
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
-            </tr>
-            {% for day, periods in schedule.items() %}
+            </table>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h1>Teacher Timetables</h1>
+        {% for teacher_name, schedule in teacher_timetables.items() %}
+            <h2>{{ teacher_name }}</h2>
+            <table>
                 <tr>
-                    <td>{{ day }}</td>
+                    <th>Day \ Period</th>
                     {% for period in range(1, periods_per_day + 1) %}
-                        <td>{{ periods[period] }}</td>
+                        <th>{{ period }}</th>
                     {% endfor %}
                 </tr>
-            {% endfor %}
-        </table>
-    {% endfor %}
+                {% for day, periods in schedule.items() %}
+                    <tr>
+                        <td>{{ day }}</td>
+                        {% for period in range(1, periods_per_day + 1) %}
+                            <td>{{ periods[period] }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
 
     <a class="back-link" href="/">← Back to form</a>
 </body>
